@@ -1,16 +1,11 @@
 package com.publicis.sapient.iot.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.publicis.sapient.iot.domain.Load;
 import com.publicis.sapient.iot.domain.NeighbourhoodSimulationRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import java.time.*;
 
 public class MockSimulationLoadFetcher implements SimulationLoadFetcher{
 
@@ -44,6 +39,7 @@ public class MockSimulationLoadFetcher implements SimulationLoadFetcher{
         int numberOfDataPoints = Math.round(SECONDS_IN_A_DAY/frequency);
         LocalDateTime time = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
         for(int i = 0; i < numberOfDataPoints; i ++){
+            time = time.plusSeconds(frequency);
             long millis = time.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
             Load load = new Load(millis, Math.abs((long)(Math.random() * 100)));
             log(load);
@@ -58,8 +54,9 @@ public class MockSimulationLoadFetcher implements SimulationLoadFetcher{
 
     private void log(Load load) {
         try {
-            System.out.println("publishing load " + objectMapper.writeValueAsString(load) +  " to topic: " + topic);
-        } catch (JsonProcessingException e) {
+            LocalDateTime time = LocalDateTime.ofInstant(Instant.ofEpochMilli(load.getTimeStamp()), ZoneId.systemDefault());
+            System.out.println("publishing load " + time +  " to topic: " + topic);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
