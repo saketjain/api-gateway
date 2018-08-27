@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 public class Load {
 
-    private LocalDateTime timeStamp;
+    private long timeStamp;
 
     private long load;
 
@@ -14,17 +14,16 @@ public class Load {
 
     }
 
-    public Load(LocalDateTime timeStamp, long load) {
+    public Load(long timeStamp, long load) {
         this.timeStamp = timeStamp;
         this.load = load;
     }
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    public LocalDateTime getTimeStamp() {
+    public long getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(LocalDateTime timeStamp) {
+    public void setTimeStamp(long timeStamp) {
         this.timeStamp = timeStamp;
     }
 

@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class NeighbourhoodSimulationRequest {
 
-    private String uuid;
+    private String id;
 
     private int numberOfHouses;
 
@@ -13,29 +13,29 @@ public class NeighbourhoodSimulationRequest {
 
     //For e.g. simulationSpeed=3600
     //means 1 simulation sec = 1 real hour
-    private int simulationSpeedInSeconds;
+    private int clockRate;
 
     //Seconds elapsed from start of day
-    private LocalDateTime simulationStartTime;
+    private LocalDateTime currentTimeStamp;
 
     public NeighbourhoodSimulationRequest(){
 
     }
 
-    public NeighbourhoodSimulationRequest(String uuid, int numberOfHouses, int sunlight, int simulationSpeedInSeconds, LocalDateTime simulationStartTime) {
-        this.uuid = uuid;
+    public NeighbourhoodSimulationRequest(String id, int numberOfHouses, int sunlight, int clockRate, LocalDateTime currentTimeStamp) {
+        this.id = id;
         this.numberOfHouses = numberOfHouses;
         this.sunlight = sunlight;
-        this.simulationSpeedInSeconds = simulationSpeedInSeconds;
-        this.simulationStartTime = simulationStartTime;
+        this.clockRate = clockRate;
+        this.currentTimeStamp = currentTimeStamp;
     }
 
-    public String getUuid() {
-        return uuid;
+    public String getId() {
+        return id;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public int getNumberOfHouses() {
@@ -54,19 +54,19 @@ public class NeighbourhoodSimulationRequest {
         this.sunlight = sunlight;
     }
 
-    public int getSimulationSpeedInSeconds() {
-        return simulationSpeedInSeconds;
+    public int getClockRate() {
+        return clockRate;
     }
 
-    public void setSimulationSpeedInSeconds(int simulationSpeedInSeconds) {
-        this.simulationSpeedInSeconds = simulationSpeedInSeconds;
+    public void setClockRate(int clockRate) {
+        this.clockRate = clockRate;
     }
 
-    public LocalDateTime getSimulationStartTime() {
-        return simulationStartTime;
+    public LocalDateTime getCurrentTimeStamp() {
+        return currentTimeStamp;
     }
 
-    public void setSimulationStartTime(LocalDateTime simulationStartTime) {
-        this.simulationStartTime = simulationStartTime;
+    public void setCurrentTimeStamp(LocalDateTime currentTimeStamp) {
+        this.currentTimeStamp = currentTimeStamp;
     }
 }

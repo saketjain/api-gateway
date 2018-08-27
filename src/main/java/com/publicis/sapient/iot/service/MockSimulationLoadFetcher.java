@@ -10,6 +10,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 
 public class MockSimulationLoadFetcher implements SimulationLoadFetcher{
 
@@ -32,18 +33,19 @@ public class MockSimulationLoadFetcher implements SimulationLoadFetcher{
             ObjectMapper objectMapper
     ) {
         this.neighbourhoodSimulationRequest = neighbourhoodSimulationRequest;
-        this.topic = "/topic/" + neighbourhoodSimulationRequest.getUuid();
+        this.topic = "/topic/" + neighbourhoodSimulationRequest.getId();
         this.template = template;
         this.objectMapper = objectMapper;
     }
 
     @Override
     public void run() {
-        int frequency = this.neighbourhoodSimulationRequest.getSimulationSpeedInSeconds();
+        int frequency = this.neighbourhoodSimulationRequest.getClockRate();
         int numberOfDataPoints = Math.round(SECONDS_IN_A_DAY/frequency);
         LocalDateTime time = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
         for(int i = 0; i < numberOfDataPoints; i ++){
-            Load load = new Load(time.plusSeconds(frequency), Math.abs((long)Math.random() * 100));
+            long millis = time.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+            Load load = new Load(millis, Math.abs((long)(Math.random() * 100)));
             log(load);
             template.convertAndSend(topic, load);
             try {
