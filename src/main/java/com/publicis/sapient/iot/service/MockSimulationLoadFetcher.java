@@ -39,11 +39,11 @@ public class MockSimulationLoadFetcher implements SimulationLoadFetcher{
         int numberOfDataPoints = Math.round(SECONDS_IN_A_DAY/frequency);
         LocalDateTime time = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
         for(int i = 0; i < numberOfDataPoints; i ++){
-            time = time.plusSeconds(frequency);
             long millis = time.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
             Load load = new Load(millis, Math.abs((long)(Math.random() * 100)));
             log(load);
             template.convertAndSend(topic, load);
+            time = time.plusSeconds(frequency);
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
