@@ -17,7 +17,7 @@ public class MockSimulationLoadFetcher implements SimulationLoadFetcher{
 
     private SimpMessagingTemplate template;
 
-    private SimulationLoadFetcher.Status status;
+    private boolean stop;
 
     private ObjectMapper objectMapper;
 
@@ -35,10 +35,14 @@ public class MockSimulationLoadFetcher implements SimulationLoadFetcher{
 
     @Override
     public void run() {
+        this.stop = false;
         int frequency = this.neighbourhoodSimulationRequest.getClockRate();
         int numberOfDataPoints = Math.round(SECONDS_IN_A_DAY/frequency);
         LocalDateTime time = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
         for(int i = 0; i < numberOfDataPoints; i ++){
+            if(stop){
+                break;
+            }
             long millis = time.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
             Load load = new Load(millis, Math.abs((long)(Math.random() * 100)));
             log(load);
@@ -73,6 +77,7 @@ public class MockSimulationLoadFetcher implements SimulationLoadFetcher{
 
     @Override
     public void stop() {
+        this.stop = true;
     }
 
     @Override

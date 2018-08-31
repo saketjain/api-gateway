@@ -35,9 +35,9 @@ public class SimulationController {
         return ResponseEntity.ok().build();
     }
 
-    @MessageMapping("/stopNeighbourhoodSimulation")
-    public ResponseEntity<String> stopNeighbourhoodSimulation(String uuid) throws Exception {
-        stopSimulation(uuid);
+    @RequestMapping(value = "/stopNeighbourhoodSimulation", method = RequestMethod.POST)
+    public ResponseEntity<String> stopNeighbourhoodSimulation(@RequestBody NeighbourhoodSimulationRequest request) throws Exception {
+        stopSimulation(request.getId());
         return ResponseEntity.ok().build();
     }
 
